@@ -12,9 +12,9 @@
 # 
 
 # %%
-!pip install openai
-!pip install python-dotenv
-!pip install tiktoken
+# !pip install openai
+# !pip install python-dotenv
+# !pip install tiktoken
 
 # %%
 # EXERCISE:
