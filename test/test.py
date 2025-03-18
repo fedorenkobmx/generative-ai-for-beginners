@@ -3,19 +3,27 @@ from openai import OpenAI
 
 api_key = os.getenv("OPENAI_API_KEY")
 
-if not api_key:
-    raise ValueError("Please set OPENAI_API_KEY environment variable in your GitHub Codespace secrets.")
+model_name = "gpt-4o-mini"
 
-client = OpenAI(api_key=api_key)
+client = OpenAI(
+    api_key=api_key,
+)
 
-completion = client.chat.completions.create(
-    model="gpt-4o-mini",
+response = client.chat.completions.create(
     messages=[
-        {"role": "system", "content": "You are a helpful assistant."},
+        {
+            "role": "system",
+            "content": "You are an art critic.",
+        },
         {
             "role": "user",
-            "content": "Write a haiku about recursion in programming."
-        }
-    ]
+            "content": "Describe the painting 'Starry Night' by Vincent van Gogh. Focus on the brushstrokes, colors, and emotional impact of the painting.",
+        },
+    ],
+    model=model_name,
+    temperature=1.,
+    max_tokens=1000,
+    top_p=1.    
 )
-print(completion.choices[0].message.content)
+
+print(response.choices[0].message.content)
