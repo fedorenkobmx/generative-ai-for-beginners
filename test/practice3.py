@@ -19,12 +19,47 @@ def generate_text(temperature, max_tokens, scenario, iot_specifications):
                 "content": f"Scenario: {scenario}\nIoT System Specifications: {iot_specifications}",
             },
         ]
+        functions = [
+    {
+        "name": "search_courses",
+        "description": "Returns a list of training courses from the Microsoft catalog",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "role": {
+                    "type": "string",
+                    "description": "User role (e.g., developer, student)"
+                },
+                "subject": {
+                    "type": "string",
+                    "description": "Covered subject (e.g., Azure, Power BI, etc.)"
+                },
+                "level": {
+                    "type": "string",
+                    "description": "User experience level (e.g., beginner)"
+                },
+                "max_duration": {
+                    "type": "integer",
+                    "description": "Maximum duration of the course in minutes"
+                },
+                "min_rating": {
+                    "type": "number",
+                    "description": "Minimum average rating of the course"
+                }
+            },
+            "required": ["role", "subject"]
+        }
+    }
+]
+
         
         response = client.chat.completions.create(
             model=model_name,
             messages=messages,
             temperature=temperature,
-            max_tokens=max_tokens
+            max_tokens=max_tokens,
+            functions=functions,
+    function_call="auto"
         )
         
         return response.choices[0].message.content
